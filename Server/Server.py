@@ -48,6 +48,54 @@ def closeConnection():
     pass
 
 
+def run():
+    ss = serverInit()
+    inputs.append(ss)
+    print("server is running...")
+    while True:
+        rlist,wlist,elist = select.select(inputs, [], [])
+        if not rlist:
+            print("timeout...")
+            break
+        for r in rlist:
+            if r is ss:
+                newConnection(ss)
+        else:
+            disconnect = False
+            try:
+                data = r.recv(1024)
+                data = fd_name[r] + " : " + data
+            except socket.error:
+                data = fd_name[r] + "leaved the room"
+                disconnect = True
+            else:
+                pass
+            if disconnect:
+                inputs.remove(r)
+                print(data)
+                for other != ss and other !=r:
+                    try:
+                        other.send(data)
+                    except Exception as e:
+                        print(e)
+                    else:
+                        pass
+                    del fd_name[r]
+
+                else:
+                    print(data)
+                    for other in inputs:
+                        if other != ss and other != r:
+                            try:
+                                other.send(data)
+                            except Exception as e:
+                                print(e)
+                    
+            
+        
+if __name__ == "__main__":
+    run()
+
   
 
 
