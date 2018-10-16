@@ -7,3 +7,5 @@ import sys
 
 host = ''
 port = 9000
+
+client_addr = (host,port)
